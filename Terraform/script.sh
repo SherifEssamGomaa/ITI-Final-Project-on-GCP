@@ -12,5 +12,7 @@ mkdir -p ~/.local/bin
 mv ./kubectl ~/.local/bin/kubectl
 kubectl version --client
 sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-gcloud container clusters get-credentials private-cluster --zone us-central1-a --project iti-sherif
+sudo apt-get install -y ansible
+git clone https://github.com/SherifEssamGomaa/ITI-Final-Project-on-GCP /home/sherifessamahmed/repo/
+sudo ansible-playbook /home/sherifessamahmed/repo/ansible-playbook.yaml
 echo "finished"

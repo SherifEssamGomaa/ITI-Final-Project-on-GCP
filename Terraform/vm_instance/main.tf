@@ -28,6 +28,9 @@ resource "google_compute_instance" "instance" {
   #                                   echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
   #                                   sudo apt-get update -y
   #                                   sudo apt-get install -y kubectl
+  #                                   sudo apt-get install -y ansible
+  #                                   git clone https://github.com/SherifEssamGomaa/ITI-Final-Project-on-GCP /home/sherifessamahmed/repo/
+  #                                   sudo ansible-playbook /home/sherifessamahmed/repo/ansible-playbook.yaml
   #                                EOF
 
   network_interface {
