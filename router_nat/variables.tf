@@ -17,3 +17,7 @@ variable "nat_ip_allocate_option" {
 variable "nat_source_subnetwork_ip_ranges_to_nat" {
   type = string
 }
+
+variable "nat_subnetwork_name" {
+  type = string
+}

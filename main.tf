@@ -3,7 +3,6 @@ module "vpc_network" {
   vpc_project_id              = var.project_id
   vpc_name                    = "vpc-network"
   vpc_auto_create_subnetworks = false
-  vpc_mtu                     = 1460
   vpc_routing_mode            = "REGIONAL"
 }
 
@@ -42,31 +41,35 @@ module "routr_nat" {
   nat_router                             = module.router.router_name
   nat_region                             = var.region
   nat_ip_allocate_option                 = "AUTO_ONLY"
-  nat_source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  nat_source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
+  nat_subnetwork_name                    = module.subnetwork.subnetwork_id
 }
 
 module "service_account" {
   source                       = "./service_account"
+  iam_role_id                  = "iam_role"
+  iam_role_title               = "iam_role"
+  iam_role_permissions         = ["resourcemanager.projects.get", "container.deployments.get", "container.deployments.create", "container.deployments.list", "container.services.list", "container.services.get", "container.services.create", "container.clusters.list", "container.clusters.getCredentials", "container.clusters.get", "container.pods.list", "container.nodes.list"]
   service_account_project_id   = var.project_id
   service_account_account_id   = "service-account"
   service_account_display_name = "service_account"
 }
 
 module "vm_instance" {
-  source                             = "./vm_instance"
-  instance_allow_stopping_for_update = true
-  instance_name                      = "vm-instance"
-  instance_machine_type              = "e2-medium"
-  instance_zone                      = var.zone
-  instance_service_account_email     = module.service_account.service_account_email
-  instance_service_account_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
-  instance_boot_disk_image           = "ubuntu-os-cloud/ubuntu-2204-lts"
-  instance_boot_disk_type            = "pd-ssd"
-  instance_boot_disk_size            = 50
-  instance_network                   = module.vpc_network.vpc_id
-  instance_subnetwork                = module.subnetwork.subnetwork_id
+  source                          = "./vm_instance"
+  instance_name                   = "vm-instance"
+  instance_machine_type           = "e2-medium"
+  instance_zone                   = var.zone
+  instance_service_account_email  = module.service_account.service_account_email
+  instance_service_account_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  instance_boot_disk_image        = "ubuntu-os-cloud/ubuntu-2204-lts"
+  instance_boot_disk_size         = 50
+  instance_network                = module.vpc_network.vpc_id
+  instance_subnetwork             = module.subnetwork.subnetwork_id
+  instance_meta_data              = file("./script.sh")
   depends_on = [
-    module.cluster
+    module.cluster,
+    module.node_pool
   ]
 }
 

@@ -1,7 +1,3 @@
-variable "instance_allow_stopping_for_update" {
-  type = bool
-}
-
 variable "instance_name" {
   type = string
 }
@@ -26,10 +22,6 @@ variable "instance_boot_disk_image" {
   type = string
 }
 
-variable "instance_boot_disk_type" {
-  type = string
-}
-
 variable "instance_boot_disk_size" {
   type = number
 }
@@ -39,5 +31,9 @@ variable "instance_network" {
 }
 
 variable "instance_subnetwork" {
+  type = string
+}
+
+variable "instance_meta_data" {
   type = string
 }
