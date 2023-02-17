@@ -8,5 +8,5 @@
       shell: kubectl create namespace jenkins
 
     - name: Deploy jenkins & lb servies
-      command: kubectl apply -f /home/sherifessamahmed/repo/jenkins/
+      command: kubectl apply -f /home/sherifessamahmed/repo/Jenkins/
       
